@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan EMI Comparison Calculator India</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+         :root {
+            --g1: #5b6af0;
+            --g2: #0ea5e9;
+            --g3: #6366f1;
+            --dark: #0f172a;
+            --card: #ffffff;
+            --bg: #f0f4ff;
+            --border: #dde3ff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --error: #ef4444;
+            --radius: 1rem;
+            --shadow: 0 4px 24px rgba(91, 106, 240, 0.10);
+            --shadow-lg: 0 8px 40px rgba(91, 106, 240, 0.18);
+        }
+        
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: transparent;
+            color: var(--text);
+            min-height: 100vh;
+            padding: 1.25rem .75rem 2.5rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        @media(max-width:600px) {
+            body {
+                padding: .75rem .5rem 2rem;
+            }
+        }
+        /* CALCULATOR CARD */
+        
+        .calc-card {
+            background: #fff;
+            border-radius: 1.5rem;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            animation: fadeUp .5s ease both .1s;
+        }
+        /* LOAN TYPE TABS */
+        
+        .loan-tabs {
+            display: flex;
+            gap: .6rem;
+            padding: 1.25rem 1.25rem .5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            border-bottom: 1px solid #f1f5f9;
+            flex-wrap: wrap;
+        }
+        
+        .loan-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .loan-tab {
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            padding: .6rem 1.1rem;
+            border-radius: .75rem;
+            background: #f8fafc;
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            transition: all .25s ease;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: .8rem;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+        
+        .loan-tab i {
+            font-size: .85rem;
+        }
+        
+        .loan-tab:hover {
+            border-color: var(--g1);
+            color: var(--g1);
+            background: #f0f4ff;
+        }
+        
+        .loan-tab.active {
+            background: linear-gradient(135deg, #5b6af0, #0ea5e9);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(91, 106, 240, .25);
+        }
+        /* INPUT SECTION */
+        
+        .input-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 1.5rem;
+            padding: 1.75rem 1.5rem 1.25rem;
+            align-items: end;
+        }
+        
+        @media(max-width:680px) {
+            .input-section {
+                grid-template-columns: 1fr;
+            }
+            .calculate-btn {
+                width: 100%;
+                margin-top: .25rem;
+            }
+        }
+        /* FLOATING LABEL */
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .float-wrap {
+            position: relative;
+        }
+        
+        .float-wrap .icon {
+            position: absolute;
+            left: .95rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: .85rem;
+            pointer-events: none;
+            transition: color .2s ease;
+            z-index: 2;
+        }
+        
+        .float-wrap input {
+            width: 100%;
+            padding: 1.45rem 1rem .55rem 2.5rem;
+            border: 1.5px solid #d1d5db;
+            border-radius: .85rem;
+            font-size: .95rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: all .25s ease;
+            background: #fff;
+            color: var(--dark);
+            outline: none;
+            appearance: textfield;
+        }
+        
+        .float-wrap input::-webkit-outer-spin-button,
+        .float-wrap input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        .float-wrap label {
+            position: absolute;
+            left: 2.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: .92rem;
+            font-weight: 500;
+            color: #94a3b8;
+            pointer-events: none;
+            transition: all .2s ease;
+            background: #fff;
+            padding: 0 .3rem;
+            border-radius: 4px;
+            line-height: 1;
+            white-space: nowrap;
+        }
+        
+        .float-wrap input:focus+label,
+        .float-wrap input:not(:placeholder-shown)+label {
+            top: 0;
+            left: .85rem;
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--g1);
+            padding: 0 .35rem;
+        }
+        
+        .float-wrap input:focus {
+            border-color: var(--g1);
+            box-shadow: 0 0 0 3px rgba(91, 106, 240, .12);
+        }
+        
+        .float-wrap input:focus~.icon {
+            color: var(--g1);
+        }
+        
+        .float-wrap input.error-field {
+            border-color: var(--error);
+        }
+        
+        .float-wrap input.error-field+label {
+            color: var(--error);
+        }
+        
+        .error-msg {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            right: .85rem;
+            transform: translateY(50%);
+            font-size: .68rem;
+            font-weight: 700;
+            color: var(--muted);
+            background: #fff;
+            padding: 0 .35rem;
+            border-radius: 3px;
+            line-height: 1;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 3;
+        }
+        
+        .error-msg.has-error {
+            color: var(--error);
+        }
+        
+        .calculate-btn {
+            background: linear-gradient(135deg, #5b6af0, #0ea5e9);
+            color: #fff;
+            padding: .9rem 2rem;
+            border: none;
+            border-radius: .75rem;
+            cursor: pointer;
+            font-size: .95rem;
+            font-weight: 700;
+            font-family: 'DM Sans', sans-serif;
+            transition: all .25s ease;
+            white-space: nowrap;
+            box-shadow: 0 4px 14px rgba(91, 106, 240, .3);
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            justify-content: center;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(91, 106, 240, .35);
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+        /* LOAN TYPE INFO BADGE */
+        
+        .loan-info-bar {
+            margin: 0 1.5rem .5rem;
+            padding: .65rem 1rem;
+            background: #f0f4ff;
+            border: 1px solid #dde3ff;
+            border-radius: .65rem;
+            font-size: .8rem;
+            color: #3730a3;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+        /* RESULTS */
+        
+        .results-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 0 1.5rem 1.5rem;
+        }
+        /* SUMMARY WRAP */
+        
+        .summary-wrap {
+            background: linear-gradient(135deg, #5b6af0 0%, #0ea5e9 60%, #6366f1 100%);
+            border-radius: 1.25rem;
+            color: #fff;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr) auto;
+            align-items: stretch;
+        }
+        
+        @media(max-width:900px) {
+            .summary-wrap {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media(max-width:560px) {
+            .summary-wrap {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media(max-width:380px) {
+            .summary-wrap {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 1.2rem 1.25rem;
+            border-right: 1px solid rgba(255, 255, 255, .18);
+            position: relative;
+        }
+        
+        .summary-item:last-of-type {
+            border-right: none;
+        }
+        
+        .summary-item .s-label {
+            font-size: .72rem;
+            opacity: .82;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            margin-bottom: .35rem;
+        }
+        
+        .summary-item .s-value {
+            font-weight: 700;
+            font-size: 1rem;
+            line-height: 1.2;
+        }
+        
+        .best-offer {
+            background: rgba(255, 255, 255, .14);
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: .5rem;
+            min-width: 180px;
+            border-left: 1px solid rgba(255, 255, 255, .18);
+        }
+        
+        @media(max-width:900px) {
+            .best-offer {
+                grid-column: 1/-1;
+                border-left: none;
+                border-top: 1px solid rgba(255, 255, 255, .18);
+                flex-direction: row;
+                align-items: center;
+                min-width: unset;
+                flex-wrap: wrap;
+                gap: .75rem;
+            }
+        }
+        
+        @media(max-width:560px) {
+            .best-offer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        
+        .best-offer-title {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            font-weight: 700;
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            opacity: .85;
+        }
+        
+        .best-bank-name {
+            font-size: .88rem;
+            font-weight: 700;
+            line-height: 1.3;
+            flex: 1;
+        }
+        
+        .apply-best-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .4rem;
+            background: #fff;
+            color: #5b6af0;
+            padding: .55rem 1.1rem;
+            border-radius: .65rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .8rem;
+            transition: all .25s ease;
+            white-space: nowrap;
+        }
+        
+        .apply-best-btn:hover {
+            background: #f0f4ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+        }
+        /* BANK GRID */
+        
+        .bank-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 1rem;
+            align-content: start;
+        }
+        
+        @media(max-width:400px) {
+            .bank-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .bank-card {
+            background: #fff;
+            border: 1.5px solid #e8eaff;
+            border-radius: 1.1rem;
+            padding: 1.25rem;
+            transition: all .3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .04);
+            animation: cardIn .35s ease both;
+        }
+        
+        .bank-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #5b6af0, #0ea5e9);
+        }
+        
+        .bank-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(91, 106, 240, .12);
+            border-color: var(--g1);
+        }
+        
+        .bank-card.best-card {
+            border: 2px solid #f59e0b;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            box-shadow: 0 8px 28px rgba(245, 158, 11, .18);
+        }
+        
+        .bank-card.best-card::before {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+        
+        .bank-card.best-card .bank-name {
+            color: #92400e;
+        }
+        
+        .bank-card.best-card .rate-pill {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        }
+        
+        .bank-card.best-card .emi-result-rows p {
+            border-bottom-color: #fde68a;
+        }
+        
+        .bank-card.best-card:hover {
+            border-color: #d97706;
+            box-shadow: 0 14px 36px rgba(245, 158, 11, .25);
+        }
+        
+        .best-card-ribbon {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: #fff;
+            font-size: .63rem;
+            font-weight: 800;
+            padding: .28rem .75rem .28rem .5rem;
+            border-bottom-left-radius: .75rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: .25rem;
+        }
+        
+        .bank-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: .85rem;
+        }
+        
+        .bank-name {
+            font-weight: 700;
+            font-size: .9rem;
+            color: var(--dark);
+            padding-right: .5rem;
+        }
+        
+        .bank-note {
+            font-size: .72rem;
+            color: var(--muted);
+            margin-bottom: .5rem;
+            font-style: italic;
+        }
+        
+        .rate-pill {
+            background: linear-gradient(135deg, #5b6af0, #0ea5e9);
+            color: #fff;
+            padding: .3rem .75rem;
+            border-radius: 20px;
+            font-size: .75rem;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .bank-range {
+            font-size: .72rem;
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+        
+        .emi-result-rows p {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: .45rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: .82rem;
+        }
+        
+        .emi-result-rows p:last-child {
+            border-bottom: none;
+        }
+        
+        .emi-result-rows p .rk {
+            color: var(--muted);
+        }
+        
+        .emi-result-rows p .rv {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .emi-highlight {
+            color: var(--g1) !important;
+            font-size: .92rem !important;
+        }
+        
+        .progress-bar {
+            height: 7px;
+            background: #e8eaff;
+            border-radius: 4px;
+            margin: .85rem 0 .4rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #5b6af0, #0ea5e9);
+            transition: width .6s ease;
+        }
+        
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: .7rem;
+            color: var(--muted);
+            margin-bottom: .85rem;
+        }
+        
+        .apply-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .4rem;
+            background: linear-gradient(135deg, #5b6af0, #0ea5e9);
+            color: #fff;
+            padding: .7rem 1rem;
+            border-radius: .7rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: .82rem;
+            transition: all .25s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .apply-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(91, 106, 240, .28);
+        }
+        /* EMPTY STATE */
+        
+        .empty-state {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 3rem 1.5rem;
+            background: #f8fafc;
+            border-radius: 1.1rem;
+            border: 1.5px dashed #dde3ff;
+        }
+        
+        .empty-state .empty-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: .4;
+        }
+        
+        .empty-state h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: .5rem;
+            color: var(--dark);
+        }
+        
+        .empty-state p {
+            color: var(--muted);
+            font-size: .88rem;
+            max-width: 380px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .bank-alert {
+            background: #fff8e1;
+            border: 1px solid #ffd54f;
+            border-radius: .6rem;
+            padding: .6rem .85rem;
+            font-size: .78rem;
+            color: #7c4700;
+            margin-top: .5rem;
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+        }
+        /* ANIMATIONS */
+        
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-16px)
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+        
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px)
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+        
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: scale(.97) translateY(10px)
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0)
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- CALCULATOR CARD (no header) -->
+        <div class="calc-card">
+
+            <!-- LOAN TYPE TABS -->
+            <div class="loan-tabs" id="tabRow">
+                <div class="loan-tab active" data-loan="home"><i class="fas fa-home"></i> Home Loan</div>
+                <div class="loan-tab" data-loan="personal"><i class="fas fa-user"></i> Personal Loan</div>
+                <div class="loan-tab" data-loan="vehicle"><i class="fas fa-car"></i> Vehicle Loan</div>
+                <div class="loan-tab" data-loan="business"><i class="fas fa-briefcase"></i> Business Loan</div>
+                <div class="loan-tab" data-loan="education"><i class="fas fa-graduation-cap"></i> Education Loan</div>
+                <div class="loan-tab" data-loan="gold"><i class="fas fa-coins"></i> Gold Loan</div>
+                <div class="loan-tab" data-loan="twoWheeler"><i class="fas fa-motorcycle"></i> Two-Wheeler</div>
+                <div class="loan-tab" data-loan="lapLoan"><i class="fas fa-building"></i> LAP</div>
+            </div>
+
+            <!-- LOAN INFO BAR -->
+            <div class="loan-info-bar" id="loanInfoBar">
+                <i class="fas fa-info-circle"></i>
+                <span id="loanInfoText">Typical rate: 8.5–9.5% p.a. | Tenure: up to 30 years | Tax benefit under Sec 80C & 24B | Max: ₹5–10 Cr (varies)</span>
+            </div>
+
+            <!-- INPUTS -->
+            <div class="input-section">
+                <div class="input-group">
+                    <div class="float-wrap">
+                        <i class="icon fas fa-rupee-sign"></i>
+                        <input type="number" id="loanAmount" placeholder=" " min="0" step="1000">
+                        <label for="loanAmount">Loan Amount (₹)</label>
+                        <div class="error-msg" id="amountError">Min: ₹2,00,000 — Max: ₹10 Cr</div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="float-wrap">
+                        <i class="icon fas fa-calendar-alt"></i>
+                        <input type="number" id="loanTenure" placeholder=" " min="1" max="30" step="1">
+                        <label for="loanTenure">Tenure (Years)</label>
+                        <div class="error-msg" id="tenureError">Tenure: 5 – 30 years</div>
+                    </div>
+                </div>
+                <button class="calculate-btn" id="calculateBtn">
+                <i class="fas fa-calculator"></i> Compare EMI
+            </button>
+            </div>
+
+            <!-- RESULTS -->
+            <div class="results-section">
+                <div class="bank-grid" id="bankGrid">
+                    <div class="empty-state">
+                        <div class="empty-icon">🏦</div>
+                        <h3>Select Loan Type & Enter Details</h3>
+                        <p>Choose a loan category, fill in amount & tenure, then click <strong>Compare EMI</strong> to see offers from top banks.</p>
+                    </div>
+                </div>
+
+                <!-- SUMMARY -->
+                <div class="summary-wrap" id="summaryWrap">
+                    <div class="summary-item">
+                        <div class="s-label">Loan Type</div>
+                        <div class="s-value" id="summaryType">Home Loan</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="s-label">Loan Amount</div>
+                        <div class="s-value" id="summaryAmount">—</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="s-label">Tenure</div>
+                        <div class="s-value" id="summaryTenure">—</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="s-label">Best Rate</div>
+                        <div class="s-value" id="summaryRate">—</div>
+                    </div>
+                    <div class="summary-item" style="border-right:none">
+                        <div class="s-label">Lowest EMI</div>
+                        <div class="s-value" id="summaryEMI">—</div>
+                    </div>
+                    <div class="best-offer">
+                        <div class="best-offer-title"><i class="fas fa-crown"></i> Best Offer</div>
+                        <div class="best-bank-name" id="bestBank">—</div>
+                        <a href="#" class="apply-best-btn" id="bestBankLink" target="_blank" rel="noopener">
+                            <i class="fas fa-paper-plane"></i> Apply Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p style="text-align:center;font-size:.75rem;color:#94a3b8;margin-top:.5rem;">
+            * Interest rates are indicative and may vary. Please visit the bank's official website for the latest rates. Last updated: Feb 2026.
+        </p>
+    </div>
+
+    <script>
+        const LOAN_DATA = {
+
+            home: {
+                label: 'Home Loan',
+                info: 'Rate: 8.5–9.5% p.a. | Tenure: up to 30 yrs | Tax benefit: Sec 80C & 24B | Up to ₹5–10 Cr',
+                tenureMin: 5,
+                tenureMax: 30,
+                banks: {
+                    'State Bank of India': {
+                        rate: 8.50,
+                        min: 500000,
+                        max: 100000000,
+                        url: 'https://sbi.co.in/web/personal-banking/loans/home-loans',
+                        note: 'SBI Home Loan (Regular)'
+                    },
+                    'HDFC Bank': {
+                        rate: 8.70,
+                        min: 500000,
+                        max: 100000000,
+                        url: 'https://www.hdfcbank.com/content/bbp/repositories/723fb80a-2dde-42a3-9793-7ae1be57c87f/?folderPath=/OLB/Redirect/home-loan.html',
+                        note: 'Home Loan'
+                    },
+                    'ICICI Bank': {
+                        rate: 8.75,
+                        min: 500000,
+                        max: 100000000,
+                        url: 'https://www.icicibank.com/personal-banking/loans/home-loan',
+                        note: 'Home Loan'
+                    },
+                    'Axis Bank': {
+                        rate: 8.75,
+                        min: 300000,
+                        max: 100000000,
+                        url: 'https://www.axisbank.com/retail/loans/home-loan',
+                        note: 'Home Loan'
+                    },
+                    'Bank of Baroda': {
+                        rate: 8.40,
+                        min: 300000,
+                        max: 100000000,
+                        url: 'https://www.bankofbaroda.in/personal-banking/loans/home-loans',
+                        note: 'Baroda Home Loan'
+                    },
+                    'LIC Housing Finance': {
+                        rate: 8.50,
+                        min: 200000,
+                        max: 150000000,
+                        url: 'https://www.lichousing.com/home-loan',
+                        note: 'LIC HFL Home Loan'
+                    },
+                    'Kotak Mahindra Bank': {
+                        rate: 8.75,
+                        min: 500000,
+                        max: 100000000,
+                        url: 'https://www.kotak.com/en/personal-banking/loans/home-loan.html',
+                        note: 'Home Loan'
+                    },
+                    'PNB Housing Finance': {
+                        rate: 8.50,
+                        min: 200000,
+                        max: 100000000,
+                        url: 'https://www.pnbhfl.com/home-loan',
+                        note: 'Home Loan'
+                    },
+                    'IDFC First Bank': {
+                        rate: 8.85,
+                        min: 500000,
+                        max: 100000000,
+                        url: 'https://www.idfcfirstbank.com/personal-banking/loans/home-loan',
+                        note: 'Home Loan'
+                    },
+                    'Tata Capital': {
+                        rate: 8.75,
+                        min: 200000,
+                        max: 50000000,
+                        url: 'https://www.tatacapital.com/home-loan.html',
+                        note: 'Home Loan'
+                    },
+                }
+            },
+
+            personal: {
+                label: 'Personal Loan',
+                info: 'Rate: 10.5–24% p.a. | Tenure: 1–7 yrs | No collateral | Pre-approved offers available | Tax benefit: None',
+                tenureMin: 1,
+                tenureMax: 7,
+                banks: {
+                    'State Bank of India': {
+                        rate: 11.15,
+                        min: 25000,
+                        max: 2000000,
+                        url: 'https://sbi.co.in/web/personal-banking/loans/personal-loans',
+                        note: 'SBI Xpress Credit'
+                    },
+                    'HDFC Bank': {
+                        rate: 10.50,
+                        min: 50000,
+                        max: 4000000,
+                        url: 'https://www.hdfcbank.com/content/bbp/repositories/723fb80a-2dde-42a3-9793-7ae1be57c87f/?folderPath=/OLB/Redirect/personal-loan.html',
+                        note: 'Personal Loan'
+                    },
+                    'ICICI Bank': {
+                        rate: 10.65,
+                        min: 50000,
+                        max: 5000000,
+                        url: 'https://www.icicibank.com/personal-banking/loans/personal-loan',
+                        note: 'Personal Loan'
+                    },
+                    'Axis Bank': {
+                        rate: 10.49,
+                        min: 50000,
+                        max: 4000000,
+                        url: 'https://www.axisbank.com/retail/loans/personal-loan',
+                        note: 'Personal Loan'
+                    },
+                    'Bajaj Finance': {
+                        rate: 11.00,
+                        min: 20000,
+                        max: 4000000,
+                        url: 'https://www.bajajfinserv.in/personal-loan',
+                        note: 'Personal Loan'
+                    },
+                    'Kotak Mahindra Bank': {
+                        rate: 10.99,
+                        min: 50000,
+                        max: 4000000,
+                        url: 'https://www.kotak.com/en/personal-banking/loans/personal-loan.html',
+                        note: 'Personal Loan'
+                    },
+                    'IndusInd Bank': {
+                        rate: 10.49,
+                        min: 30000,
+                        max: 3000000,
+                        url: 'https://www.indusind.com/in/en/personal/loans/personal-loan.html',
+                        note: 'Personal Loan'
+                    },
+                    'Tata Capital': {
+                        rate: 10.99,
+                        min: 75000,
+                        max: 3500000,
+                        url: 'https://www.tatacapital.com/personal-loan.html',
+                        note: 'Personal Loan'
+                    },
+                    'MoneyView': {
+                        rate: 13.99,
+                        min: 10000,
+                        max: 1000000,
+                        url: 'https://moneyview.in/personal-loan',
+                        note: 'Instant Personal Loan'
+                    },
+                    'IDFC First Bank': {
+                        rate: 10.49,
+                        min: 20000,
+                        max: 4000000,
+                        url: 'https://www.idfcfirstbank.com/personal-banking/loans/personal-loan',
+                        note: 'Personal Loan'
+                    },
+                }
+            },
+
+            vehicle: {
+                label: 'Vehicle Loan',
+                info: 'Rate: 8.5–12% (Car) | 9–15% (Bike) | Tenure: 1–7 yrs | Usually 80–90% of on-road price | Min CIBIL: 700',
+                tenureMin: 1,
+                tenureMax: 7,
+                banks: {
+                    'State Bank of India': {
+                        rate: 8.65,
+                        min: 100000,
+                        max: 50000000,
+                        url: 'https://sbi.co.in/web/personal-banking/loans/auto-loans',
+                        note: 'SBI Car Loan'
+                    },
+                    'HDFC Bank': {
+                        rate: 8.75,
+                        min: 200000,
+                        max: 50000000,
+                        url: 'https://www.hdfcbank.com/content/bbp/repositories/723fb80a-2dde-42a3-9793-7ae1be57c87f/?folderPath=/OLB/Redirect/car-loan.html',
+                        note: 'Car Loan'
+                    },
+                    'ICICI Bank': {
+                        rate: 8.80,
+                        min: 200000,
+                        max: 50000000,
+                        url: 'https://www.icicibank.com/personal-banking/loans/car-loan',
+                        note: 'Car Loan'
+                    },
+                    'Axis Bank': {
+                        rate: 8.90,
+                        min: 150000,
+                        max: 40000000,
+                        url: 'https://www.axisbank.com/retail/loans/car-loan',
+                        note: 'Car Loan'
+                    },
+                    'Bank of Baroda': {
+                        rate: 8.70,
+                        min: 100000,
+                        max: 40000000,
+                        url: 'https://www.bankofbaroda.in/personal-banking/loans/vehicle-loans',
+                        note: 'Vehicle Loan'
+                    },
+                    'Kotak Mahindra Bank': {
+                        rate: 8.85,
+                        min: 200000,
+                        max: 40000000,
+                        url: 'https://www.kotak.com/en/personal-banking/loans/car-loan.html',
+                        note: 'Car Loan'
+                    },
+                    'Tata Capital': {
+                        rate: 8.75,
+                        min: 150000,
+                        max: 30000000,
+                        url: 'https://www.tatacapital.com/vehicle-loans/car-loan.html',
+                        note: 'Car Loan'
+                    },
+                    'Mahindra Finance': {
+                        rate: 9.00,
+                        min: 100000,
+                        max: 30000000,
+                        url: 'https://www.mahindrafinance.com/vehicle-loan',
+                        note: 'Vehicle Loan'
+                    },
+                    'IndusInd Bank': {
+                        rate: 9.00,
+                        min: 150000,
+                        max: 30000000,
+                        url: 'https://www.indusind.com/in/en/personal/loans/car-loan.html',
+                        note: 'Car Loan'
+                    },
+                    'IDFC First Bank': {
+                        rate: 8.85,
+                        min: 150000,
+                        max: 35000000,
+                        url: 'https://www.idfcfirstbank.com/personal-banking/loans/car-loan',
+                        note: 'Car Loan'
+                    },
+                }
+            },
+
+            business: {
+                label: 'Business Loan',
+                info: 'Rate: 12–24% p.a. | Tenure: 1–15 yrs | MSME loans with Govt subsidy | Min turnover: ₹10 Lakh | Collateral may be required',
+                tenureMin: 1,
+                tenureMax: 15,
+                banks: {
+                    'State Bank of India': {
+                        rate: 12.00,
+                        min: 500000,
+                        max: 500000000,
+                        url: 'https://sbi.co.in/web/business/sme',
+                        note: 'SME Business Loan'
+                    },
+                    'HDFC Bank': {
+                        rate: 13.00,
+                        min: 500000,
+                        max: 100000000,
+                        url: 'https://www.hdfcbank.com/content/bbp/repositories/723fb80a-2dde-42a3-9793-7ae1be57c87f/?folderPath=/OLB/Redirect/business-loan.html',
+                        note: 'Business Loan'
+                    },
+                    'ICICI Bank': {
+                        rate: 13.50,
+                        min: 500000,
+                        max: 100000000,
+                        url: 'https://www.icicibank.com/business-banking/loans/business-installment-loan',
+                        note: 'Business Installment Loan'
+                    },
+                    'Axis Bank': {
+                        rate: 14.00,
+                        min: 500000,
+                        max: 75000000,
+                        url: 'https://www.axisbank.com/retail/loans/business-loan',
+                        note: 'Business Loan'
+                    },
+                    'Bajaj Finance': {
+                        rate: 14.00,
+                        min: 200000,
+                        max: 80000000,
+                        url: 'https://www.bajajfinserv.in/business-loan',
+                        note: 'Business Loan'
+                    },
+                    'Tata Capital': {
+                        rate: 12.00,
+                        min: 500000,
+                        max: 75000000,
+                        url: 'https://www.tatacapital.com/business-loan.html',
+                        note: 'Business Loan'
+                    },
+                    'IDFC First Bank': {
+                        rate: 14.50,
+                        min: 500000,
+                        max: 50000000,
+                        url: 'https://www.idfcfirstbank.com/business-banking/loans/business-loan',
+                        note: 'Business Loan'
+                    },
+                    'Kotak Mahindra Bank': {
+                        rate: 16.00,
+                        min: 300000,
+                        max: 75000000,
+                        url: 'https://www.kotak.com/en/business-banking/loans/business-loan.html',
+                        note: 'Business Loan'
+                    },
+                    'Lendingkart': {
+                        rate: 18.00,
+                        min: 50000,
+                        max: 20000000,
+                        url: 'https://www.lendingkart.com',
+                        note: 'MSME / Working Capital Loan'
+                    },
+                    'FlexiLoans': {
+                        rate: 18.00,
+                        min: 100000,
+                        max: 10000000,
+                        url: 'https://www.flexiloans.com',
+                        note: 'Unsecured Business Loan'
+                    },
+                }
+            },
+
+            education: {
+                label: 'Education Loan',
+                info: 'Rate: 8–15% p.a. | Moratorium during study + 6–12 months | Tax benefit: Sec 80E (interest deduction) | No collateral up to ₹7.5L',
+                tenureMin: 1,
+                tenureMax: 15,
+                banks: {
+                    'State Bank of India': {
+                        rate: 8.65,
+                        min: 50000,
+                        max: 15000000,
+                        url: 'https://sbi.co.in/web/personal-banking/loans/education-loans',
+                        note: 'SBI Student Loan Scheme'
+                    },
+                    'Bank of Baroda': {
+                        rate: 8.15,
+                        min: 50000,
+                        max: 12500000,
+                        url: 'https://www.bankofbaroda.in/personal-banking/loans/educational-loan',
+                        note: 'Baroda Education Loan'
+                    },
+                    'HDFC Credila': {
+                        rate: 9.50,
+                        min: 100000,
+                        max: 50000000,
+                        url: 'https://www.hdfccredila.com',
+                        note: 'Education Loan'
+                    },
+                    'ICICI Bank': {
+                        rate: 9.99,
+                        min: 100000,
+                        max: 20000000,
+                        url: 'https://www.icicibank.com/personal-banking/loans/education-loan',
+                        note: 'Education Loan'
+                    },
+                    'Axis Bank': {
+                        rate: 13.70,
+                        min: 50000,
+                        max: 7500000,
+                        url: 'https://www.axisbank.com/retail/loans/education-loan',
+                        note: 'Education Loan'
+                    },
+                    'Punjab National Bank': {
+                        rate: 8.75,
+                        min: 50000,
+                        max: 10000000,
+                        url: 'https://www.pnbindia.in/education-loan.html',
+                        note: 'PNB Saraswati'
+                    },
+                    'Avanse Financial': {
+                        rate: 10.50,
+                        min: 100000,
+                        max: 75000000,
+                        url: 'https://www.avanse.com',
+                        note: 'Education Loan'
+                    },
+                    'InCred Finance': {
+                        rate: 11.00,
+                        min: 100000,
+                        max: 50000000,
+                        url: 'https://www.incred.com/education-loan',
+                        note: 'Education Loan'
+                    },
+                    'Prodigy Finance': {
+                        rate: 12.00,
+                        min: 500000,
+                        max: 30000000,
+                        url: 'https://prodigyfinance.com',
+                        note: 'International Study Loan'
+                    },
+                    'Central Bank of India': {
+                        rate: 8.50,
+                        min: 50000,
+                        max: 10000000,
+                        url: 'https://www.centralbankofindia.co.in/education-loan',
+                        note: 'Cent Vidyarthi Loan'
+                    },
+                }
+            },
+
+            gold: {
+                label: 'Gold Loan',
+                info: 'Rate: 9–24% p.a. | Tenure: 3–36 months | Quick disbursal in 30 min | LTV up to 75% | No CIBIL check required',
+                tenureMin: 1,
+                tenureMax: 3,
+                banks: {
+                    'Muthoot Finance': {
+                        rate: 9.96,
+                        min: 15000,
+                        max: 100000000,
+                        url: 'https://www.muthootfinance.com/gold-loan',
+                        note: 'Gold Loan – Lowest Rate Plan'
+                    },
+                    'Manappuram Finance': {
+                        rate: 9.90,
+                        min: 10000,
+                        max: 50000000,
+                        url: 'https://www.manappuram.com/gold-loan',
+                        note: 'Gold Loan'
+                    },
+                    'State Bank of India': {
+                        rate: 8.80,
+                        min: 20000,
+                        max: 50000000,
+                        url: 'https://sbi.co.in/web/personal-banking/loans/gold-loan',
+                        note: 'SBI Gold Loan'
+                    },
+                    'HDFC Bank': {
+                        rate: 11.00,
+                        min: 25000,
+                        max: 50000000,
+                        url: 'https://www.hdfcbank.com/content/bbp/repositories/723fb80a-2dde-42a3-9793-7ae1be57c87f/?folderPath=/OLB/Redirect/gold-loan.html',
+                        note: 'Gold Loan'
+                    },
+                    'ICICI Bank': {
+                        rate: 11.00,
+                        min: 10000,
+                        max: 50000000,
+                        url: 'https://www.icicibank.com/personal-banking/loans/gold-loan',
+                        note: 'Gold Loan'
+                    },
+                    'Axis Bank': {
+                        rate: 15.00,
+                        min: 25001,
+                        max: 50000000,
+                        url: 'https://www.axisbank.com/retail/loans/gold-loan',
+                        note: 'Gold Loan'
+                    },
+                    'Canara Bank': {
+                        rate: 9.00,
+                        min: 5000,
+                        max: 35000000,
+                        url: 'https://canarabank.com/gold-loan',
+                        note: 'Gold Loan'
+                    },
+                    'Federal Bank': {
+                        rate: 10.00,
+                        min: 10000,
+                        max: 50000000,
+                        url: 'https://www.federalbank.co.in/gold-loan',
+                        note: 'Federal Bank Gold Loan'
+                    },
+                    'IIFL Finance': {
+                        rate: 9.24,
+                        min: 10000,
+                        max: 50000000,
+                        url: 'https://www.iifl.com/finance/gold-loan',
+                        note: 'Gold Loan'
+                    },
+                    'Bajaj Finance': {
+                        rate: 9.50,
+                        min: 5000,
+                        max: 20000000,
+                        url: 'https://www.bajajfinserv.in/gold-loan',
+                        note: 'Gold Loan'
+                    },
+                }
+            },
+
+            twoWheeler: {
+                label: 'Two-Wheeler Loan',
+                info: 'Rate: 9–20% p.a. | Tenure: 1–5 yrs | Finance up to 90% of on-road price | Minimal paperwork | Bike & Scooter both covered',
+                tenureMin: 1,
+                tenureMax: 5,
+                banks: {
+                    'HDFC Bank': {
+                        rate: 9.25,
+                        min: 20000,
+                        max: 500000,
+                        url: 'https://www.hdfcbank.com/content/bbp/repositories/723fb80a-2dde-42a3-9793-7ae1be57c87f/?folderPath=/OLB/Redirect/two-wheeler-loan.html',
+                        note: 'Two-Wheeler Loan'
+                    },
+                    'Bajaj Finance': {
+                        rate: 9.75,
+                        min: 15000,
+                        max: 500000,
+                        url: 'https://www.bajajfinserv.in/two-wheeler-loan',
+                        note: 'Two-Wheeler Finance'
+                    },
+                    'Hero FinCorp': {
+                        rate: 9.99,
+                        min: 15000,
+                        max: 500000,
+                        url: 'https://herofincorp.com/two-wheeler-loans',
+                        note: 'Two-Wheeler Loan'
+                    },
+                    'ICICI Bank': {
+                        rate: 9.50,
+                        min: 20000,
+                        max: 500000,
+                        url: 'https://www.icicibank.com/personal-banking/loans/two-wheeler-loan',
+                        note: 'Two-Wheeler Loan'
+                    },
+                    'Axis Bank': {
+                        rate: 9.60,
+                        min: 25000,
+                        max: 500000,
+                        url: 'https://www.axisbank.com/retail/loans/two-wheeler-loan',
+                        note: 'Two-Wheeler Loan'
+                    },
+                    'TVS Credit': {
+                        rate: 9.80,
+                        min: 15000,
+                        max: 400000,
+                        url: 'https://tvscredit.com/two-wheeler-loan',
+                        note: 'Two-Wheeler Loan'
+                    },
+                    'Shriram Finance': {
+                        rate: 10.25,
+                        min: 20000,
+                        max: 400000,
+                        url: 'https://www.shriramfinance.in/two-wheeler-loan',
+                        note: 'Two-Wheeler Loan'
+                    },
+                    'State Bank of India': {
+                        rate: 9.70,
+                        min: 20000,
+                        max: 500000,
+                        url: 'https://sbi.co.in/web/personal-banking/loans/auto-loans',
+                        note: 'Two-Wheeler Loan'
+                    },
+                    'Poonawalla Fincorp': {
+                        rate: 10.00,
+                        min: 15000,
+                        max: 400000,
+                        url: 'https://poonawallafincorp.com/two-wheeler-loan',
+                        note: 'Two-Wheeler Loan'
+                    },
+                    'L&T Finance': {
+                        rate: 9.90,
+                        min: 15000,
+                        max: 400000,
+                        url: 'https://www.ltfs.com/products/two-wheeler-finance.html',
+                        note: 'Two-Wheeler Finance'
+                    },
+                }
+            },
+
+            lapLoan: {
+                label: 'Loan Against Property',
+                info: 'Rate: 8.5–12% p.a. | Tenure: up to 20 yrs | Loan: 50–70% of property value | Tax benefit possible for business use | Min CIBIL: 650',
+                tenureMin: 1,
+                tenureMax: 20,
+                banks: {
+                    'State Bank of India': {
+                        rate: 8.60,
+                        min: 1000000,
+                        max: 750000000,
+                        url: 'https://sbi.co.in/web/personal-banking/loans/mortgage-loans',
+                        note: 'SBI Realty / Mortgage Loan'
+                    },
+                    'HDFC Bank': {
+                        rate: 8.70,
+                        min: 1000000,
+                        max: 500000000,
+                        url: 'https://www.hdfcbank.com/content/bbp/repositories/723fb80a-2dde-42a3-9793-7ae1be57c87f/?folderPath=/OLB/Redirect/loan-against-property.html',
+                        note: 'Loan Against Property'
+                    },
+                    'ICICI Bank': {
+                        rate: 8.85,
+                        min: 1000000,
+                        max: 500000000,
+                        url: 'https://www.icicibank.com/personal-banking/loans/loan-against-property',
+                        note: 'Loan Against Property'
+                    },
+                    'Axis Bank': {
+                        rate: 9.00,
+                        min: 1000000,
+                        max: 500000000,
+                        url: 'https://www.axisbank.com/retail/loans/loan-against-property',
+                        note: 'Loan Against Property'
+                    },
+                    'Bajaj Finance': {
+                        rate: 9.50,
+                        min: 1800000,
+                        max: 1000000000,
+                        url: 'https://www.bajajfinserv.in/loan-against-property',
+                        note: 'Loan Against Property'
+                    },
+                    'Tata Capital': {
+                        rate: 9.00,
+                        min: 1000000,
+                        max: 300000000,
+                        url: 'https://www.tatacapital.com/loan-against-property.html',
+                        note: 'Loan Against Property'
+                    },
+                    'PNB Housing Finance': {
+                        rate: 8.75,
+                        min: 500000,
+                        max: 500000000,
+                        url: 'https://www.pnbhfl.com/loan-against-property',
+                        note: 'Loan Against Property'
+                    },
+                    'LIC Housing Finance': {
+                        rate: 8.65,
+                        min: 500000,
+                        max: 500000000,
+                        url: 'https://www.lichousing.com/loan-against-property',
+                        note: 'Loan Against Property'
+                    },
+                    'Kotak Mahindra Bank': {
+                        rate: 9.15,
+                        min: 1000000,
+                        max: 500000000,
+                        url: 'https://www.kotak.com/en/personal-banking/loans/loan-against-property.html',
+                        note: 'Loan Against Property'
+                    },
+                    'IDFC First Bank': {
+                        rate: 9.00,
+                        min: 1000000,
+                        max: 300000000,
+                        url: 'https://www.idfcfirstbank.com/personal-banking/loans/loan-against-property',
+                        note: 'Loan Against Property'
+                    },
+                }
+            }
+        };
+
+        /* ===== HELPERS ===== */
+        function fmt(n) {
+            return '₹' + Math.round(n).toLocaleString('en-IN');
+        }
+
+        function getConstraints(type) {
+            const banks = LOAN_DATA[type].banks;
+            let minA = Infinity,
+                maxA = 0;
+            for (const b in banks) {
+                if (banks[b].min < minA) minA = banks[b].min;
+                if (banks[b].max > maxA) maxA = banks[b].max;
+            }
+            return {
+                minAmount: minA,
+                maxAmount: maxA
+            };
+        }
+
+        function showErr(id, msg) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.classList.add('has-error');
+            const inp = id === 'amountError' ? 'loanAmount' : 'loanTenure';
+            document.getElementById(inp).classList.add('error-field');
+        }
+
+        function clearErrors() {
+            ['amountError', 'tenureError'].forEach(id => {
+                document.getElementById(id).classList.remove('has-error');
+            });
+            ['loanAmount', 'loanTenure'].forEach(id => {
+                document.getElementById(id).classList.remove('error-field');
+            });
+            // Restore hint text
+            const type = document.querySelector('.loan-tab.active').dataset.loan;
+            if (!type || !LOAN_DATA[type]) return;
+            const cfg = LOAN_DATA[type];
+            const ac = getConstraints(type);
+            const amtMsg = document.getElementById('amountError');
+            if (amtMsg && !amtMsg.classList.contains('has-error')) {
+                amtMsg.textContent = `Min: ${fmt(ac.minAmount)} — Max: ${fmt(ac.maxAmount)}`;
+            }
+            const tenMsg = document.getElementById('tenureError');
+            if (tenMsg && !tenMsg.classList.contains('has-error')) {
+                tenMsg.textContent = `Tenure: ${cfg.tenureMin} – ${cfg.tenureMax} years`;
+            }
+        }
+
+        function resetSummary() {
+            ['summaryAmount', 'summaryTenure', 'summaryRate', 'summaryEMI'].forEach(id => {
+                document.getElementById(id).textContent = '—';
+            });
+            document.getElementById('bestBank').textContent = '—';
+            document.getElementById('bestBankLink').href = '#';
+        }
+
+        function updateUI(type) {
+            const cfg = LOAN_DATA[type];
+            document.getElementById('loanInfoText').textContent = cfg.info;
+            document.getElementById('summaryType').textContent = cfg.label;
+            const ac = getConstraints(type);
+            const amtIn = document.getElementById('loanAmount');
+            const tenIn = document.getElementById('loanTenure');
+            amtIn.min = ac.minAmount;
+            amtIn.max = ac.maxAmount;
+            tenIn.min = cfg.tenureMin;
+            tenIn.max = cfg.tenureMax;
+            amtIn.value = '';
+            tenIn.value = '';
+            clearErrors();
+            // Update always-visible hint text with valid ranges
+            const amtMsg = document.getElementById('amountError');
+            amtMsg.textContent = `Min: ${fmt(ac.minAmount)} — Max: ${fmt(ac.maxAmount)}`;
+            amtMsg.classList.remove('has-error');
+            const tenMsg = document.getElementById('tenureError');
+            tenMsg.textContent = `Tenure: ${cfg.tenureMin} – ${cfg.tenureMax} years`;
+            tenMsg.classList.remove('has-error');
+        }
+
+        function buildCards(type) {
+            const grid = document.getElementById('bankGrid');
+            grid.innerHTML = '';
+            Object.entries(LOAN_DATA[type].banks).forEach(([name, data]) => {
+                const card = document.createElement('div');
+                card.className = 'bank-card';
+                card.innerHTML = `
+            <div class="bank-header">
+                <div class="bank-name">${name}</div>
+                <div class="rate-pill">${data.rate.toFixed(2)}%</div>
+            </div>
+            <div class="bank-note">${data.note}</div>
+            <div class="bank-range">Range: ${fmt(data.min)} – ${fmt(data.max)}</div>
+            <div class="emi-result-rows" data-bank="${name}"></div>`;
+                grid.appendChild(card);
+            });
+        }
+
+        function emptyState(msg) {
+            document.getElementById('bankGrid').innerHTML = `
+        <div class="empty-state">
+            <div class="empty-icon">🏦</div>
+            <h3>Enter Loan Details</h3>
+            <p>${msg}</p>
+        </div>`;
+        }
+
+        /* ===== CALCULATE ===== */
+        function calculate() {
+            clearErrors();
+            const type = document.querySelector('.loan-tab.active').dataset.loan;
+            const cfg = LOAN_DATA[type];
+            const amount = parseFloat(document.getElementById('loanAmount').value);
+            const tenure = parseInt(document.getElementById('loanTenure').value);
+            const ac = getConstraints(type);
+
+            let ok = true;
+            if (!amount || amount < ac.minAmount) {
+                showErr('amountError', `Min: ${fmt(ac.minAmount)}`);
+                ok = false;
+            } else if (amount > ac.maxAmount) {
+                showErr('amountError', `Max: ${fmt(ac.maxAmount)}`);
+                ok = false;
+            }
+            if (!tenure || tenure < cfg.tenureMin || tenure > cfg.tenureMax) {
+                showErr('tenureError', `${cfg.tenureMin}–${cfg.tenureMax} yrs`);
+                ok = false;
+            }
+            if (!ok) return;
+
+            const months = tenure * 12;
+            let bestRate = Infinity,
+                lowestEMI = Infinity,
+                bestBankName = '',
+                bestUrl = '';
+            let bestCardEl = null;
+
+            buildCards(type);
+
+            Object.entries(cfg.banks).forEach(([name, data], idx) => {
+                const rowEl = document.querySelector(`.emi-result-rows[data-bank="${name}"]`);
+                const card = rowEl.closest('.bank-card');
+                card.style.animationDelay = (idx * 0.05) + 's';
+
+                if (amount < data.min || amount > data.max) {
+                    const msg = amount < data.min ? `Min loan here: ${fmt(data.min)}` : `Max loan here: ${fmt(data.max)}`;
+                    rowEl.innerHTML = `<div class="bank-alert"><i class="fas fa-exclamation-triangle"></i> ${msg}</div>`;
+                    return;
+                }
+
+                const r = (data.rate / 12) / 100;
+                const emi = (amount * r * Math.pow(1 + r, months)) / (Math.pow(1 + r, months) - 1);
+                const total = emi * months;
+                const interest = total - amount;
+                const pPct = ((amount / total) * 100).toFixed(1);
+                const iPct = (100 - pPct).toFixed(1);
+
+                rowEl.innerHTML = `
+            <p><span class="rk">Monthly EMI</span><span class="rv emi-highlight">${fmt(emi)}</span></p>
+            <p><span class="rk">Total Interest</span><span class="rv">${fmt(interest)}</span></p>
+            <p><span class="rk">Total Payment</span><span class="rv">${fmt(total)}</span></p>
+            <div class="progress-bar"><div class="progress-fill" style="width:${pPct}%"></div></div>
+            <div class="progress-labels"><span>Principal ${pPct}%</span><span>Interest ${iPct}%</span></div>
+            <a href="${data.url}" class="apply-btn" target="_blank" rel="noopener">
+                <i class="fas fa-external-link-alt"></i> Apply at ${name.split(' ')[0]}
+            </a>`;
+
+                if (data.rate < bestRate) {
+                    bestRate = data.rate;
+                    bestBankName = name;
+                    bestUrl = data.url;
+                    bestCardEl = card;
+                }
+                if (emi < lowestEMI) lowestEMI = emi;
+            });
+
+            if (bestCardEl) {
+                bestCardEl.classList.add('best-card');
+                if (!bestCardEl.querySelector('.best-card-ribbon')) {
+                    const rib = document.createElement('div');
+                    rib.className = 'best-card-ribbon';
+                    rib.innerHTML = '<i class="fas fa-crown"></i> Best';
+                    bestCardEl.appendChild(rib);
+                }
+            }
+
+            document.getElementById('summaryAmount').textContent = fmt(amount);
+            document.getElementById('summaryTenure').textContent = `${tenure} yr${tenure>1?'s':''}`;
+            document.getElementById('summaryRate').textContent = bestRate === Infinity ? '—' : bestRate.toFixed(2) + '%';
+            document.getElementById('summaryEMI').textContent = lowestEMI === Infinity ? '—' : fmt(lowestEMI);
+            document.getElementById('bestBank').textContent = bestBankName || '—';
+            document.getElementById('bestBankLink').href = bestUrl || '#';
+        }
+
+        /* ===== EVENTS ===== */
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI('home');
+            emptyState('Fill in amount & tenure, then click <strong>Compare EMI</strong> to see offers from top banks & NBFCs.');
+
+            document.querySelectorAll('.loan-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelector('.loan-tab.active').classList.remove('active');
+                    this.classList.add('active');
+                    const type = this.dataset.loan;
+                    updateUI(type);
+                    resetSummary();
+                    document.getElementById('summaryType').textContent = LOAN_DATA[type].label;
+                    emptyState('Select amount and tenure, then click <strong>Compare EMI</strong>.');
+                });
+            });
+
+            document.getElementById('calculateBtn').addEventListener('click', calculate);
+            ['loanAmount', 'loanTenure'].forEach(id => {
+                document.getElementById(id).addEventListener('keydown', e => {
+                    if (e.key === 'Enter') calculate();
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
